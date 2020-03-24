@@ -1,4 +1,0 @@
-This is the playbook: webserver
-This is the package: nginx
-This is the service: nginx
-This is the template: /var/www/html/index.html
