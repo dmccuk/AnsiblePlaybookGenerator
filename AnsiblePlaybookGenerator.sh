@@ -4,12 +4,16 @@
 #
 ## v.0.01
 
+#Uncomment below for debugging
+#set -x
+
 RUNDIR=/opt/ansible_files
 
 clearDir ()
 {
 rm -fr $RUNDIR/tasks/*
 rm -fr $RUNDIR/run.yml
+rm -fr $RUNDIR/templates/*
 }
 
 ansibleCFG ()
@@ -62,8 +66,8 @@ fi
 createDirs ()
 {
 echo "Creating the other directories we need"
-mkdir -p $RUNDIR/{tasks,templates,files,group_vars}
-touch $RUNDIR/{packages,users,templates,run.yml}
+mkdir -p $RUNDIR/{tasks,templates}
+touch $RUNDIR/run.yml
 
 ls -al $RUNDIR
 }
@@ -79,39 +83,53 @@ cat << EOF >> $RUNDIR/run.yml
 EOF
 }
 
-grabPackagesServices ()
+checkKeyFile ()
 {
-cat << EOF >> $RUNDIR/tasks/packages_services.yml
+# while loop to read through the keyFile
+while LST= read -r playbook_name package service template; do
+cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
+# Create the playbook with required content
 ---
 - name: install package
   package:
-    name:
-EOF
-while LST= read -r package service; do
-echo "      - "$package >> $RUNDIR/tasks/packages_services.yml
-done < $RUNDIR/packages
-echo "    state: present" >> $RUNDIR/tasks/packages_services.yml
+    name: $package
+    state: present
 
-cat << EOF >> $RUNDIR/tasks/packages_services.yml
 - name: Enable service
   service:
-    name: "{{ item }}"
+    name: $service
+    enabled: yes
+    state: started
 EOF
 
-echo "    enabled: yes" >> $RUNDIR/tasks/packages_services.yml
-echo "    state: started" >> $RUNDIR/tasks/packages_services.yml
-echo "  with_items:" >> $RUNDIR/tasks/packages_services.yml
-while LST= read -r package service; do
-echo "    - $service" >> $RUNDIR/tasks/packages_services.yml
-done < $RUNDIR/packages
+if [ ! -z "$template" ]
+then
+cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
 
+- template:
+    src: $RUNDIR/templates/$template.j2
+    dest: /tmp/$template #Change me for the real location...
+  notify:
+  -  restart $package
+EOF
 
+cat << EOF >> $RUNDIR/run.yml
+  handlers:
+    - name: restart $package
+      service:
+        name: $package
+        state: restarted
+EOF
+echo "Add stuff to me!" >> $RUNDIR/templates/$template.j2
+fi
+# The keyFile is in the same DIR at the AnsiblePlaybookGenerator script.
+done < keyFile
 }
-
 
 addTasks ()
 {
-for i in `ls  $RUNDIR/tasks`; do echo "    - "import_tasks: tasks/$i >> $RUNDIR/run.yml; done
+#for i in `ls  $RUNDIR/tasks`; do echo "    - "import_tasks: tasks/$i | >> $RUNDIR/run.yml; done
+for i in `ls  $RUNDIR/tasks`; do sed -i "/handlers:/i\    \- import_tasks: tasks\/$i" $RUNDIR/run.yml; done
 }
 
 
@@ -121,7 +139,7 @@ inventory
 questions
 createDirs
 startRunYml
-grabPackagesServices
+checkKeyFile
 addTasks
 
 
