@@ -4,23 +4,23 @@
 #
 ## v.0.01
 
-
+RUNDIR=/opt/ansible_files
 
 clearDir ()
 {
-rm -fr /tmp/ansible_files/tasks/*
-rm -fr /tmp/ansible_files/run.yml
+rm -fr $RUNDIR/tasks/*
+rm -fr $RUNDIR/run.yml
 }
 
 ansibleCFG ()
 {
-if [ -f "/tmp/ansible_files/ansible.cfg" ]
+if [ -f "$RUNDIR/ansible.cfg" ]
 then
     echo " ** OK: ansible.cfg exists. **"
 else
     echo " ** Error: No ansible.cfg. **"
     echo " **     Creating now... **"
-    cat << EOF >> /tmp/ansible_files/ansible.cfg
+    cat << EOF >> $RUNDIR/ansible.cfg
 [default]
 timeout=10
 private_key_file = ~/.ssh/id_rsa
@@ -41,18 +41,18 @@ fi
 
 inventory ()
 {
-echo "localhost ansible_python_interpreter=/usr/bin/python3" > /tmp/ansible_files/inventory
+echo "localhost ansible_python_interpreter=/usr/bin/python3" > $RUNDIR/inventory
 }
 
 questions ()
 {
 echo ""
-echo "Put all the files in the /tmp/ansible_files DIR:"
-if [ -d "/tmp/ansible_files" ]
+echo "Put all the files in the $RUNDIR DIR:"
+if [ -d "$RUNDIR" ]
 then
-    echo " ** OK: Directory /tmp/ansible_files exists. **"
+    echo " ** OK: Directory $RUNDIR exists. **"
 else
-    echo " ** Error: Directory /tmp/ansible_files does not exists. **"
+    echo " ** Error: Directory $RUNDIR does not exists. **"
     echo " **     Creating now... **"
     mkdir $ansible_path
 
@@ -62,15 +62,15 @@ fi
 createDirs ()
 {
 echo "Creating the other directories we need"
-mkdir -p /tmp/ansible_files/{tasks,templates,files,group_vars}
-touch /tmp/ansible_files/{packages,users,templates,run.yml}
+mkdir -p $RUNDIR/{tasks,templates,files,group_vars}
+touch $RUNDIR/{packages,users,templates,run.yml}
 
-ls -al /tmp/ansible_files
+ls -al $RUNDIR
 }
 
 startRunYml ()
 {
-cat << EOF >> /tmp/ansible_files/run.yml
+cat << EOF >> $RUNDIR/run.yml
 ---
 - hosts: localhost
   connection: local
@@ -81,29 +81,29 @@ EOF
 
 grabPackagesServices ()
 {
-cat << EOF >> /tmp/ansible_files/tasks/packages_services.yml
+cat << EOF >> $RUNDIR/tasks/packages_services.yml
 ---
 - name: install package
   package:
     name:
 EOF
 while LST= read -r package service; do
-echo "      - "$package >> /tmp/ansible_files/tasks/packages_services.yml
-done < /tmp/ansible_files/packages
-echo "    state: present" >> /tmp/ansible_files/tasks/packages_services.yml
+echo "      - "$package >> $RUNDIR/tasks/packages_services.yml
+done < $RUNDIR/packages
+echo "    state: present" >> $RUNDIR/tasks/packages_services.yml
 
-cat << EOF >> /tmp/ansible_files/tasks/packages_services.yml
+cat << EOF >> $RUNDIR/tasks/packages_services.yml
 - name: Enable service
   service:
     name: "{{ item }}"
 EOF
 
-echo "    enabled: yes" >> /tmp/ansible_files/tasks/packages_services.yml
-echo "    state: started" >> /tmp/ansible_files/tasks/packages_services.yml
-echo "  with_items:" >> /tmp/ansible_files/tasks/packages_services.yml
+echo "    enabled: yes" >> $RUNDIR/tasks/packages_services.yml
+echo "    state: started" >> $RUNDIR/tasks/packages_services.yml
+echo "  with_items:" >> $RUNDIR/tasks/packages_services.yml
 while LST= read -r package service; do
-echo "    - $service" >> /tmp/ansible_files/tasks/packages_services.yml
-done < /tmp/ansible_files/packages
+echo "    - $service" >> $RUNDIR/tasks/packages_services.yml
+done < $RUNDIR/packages
 
 
 }
@@ -111,7 +111,7 @@ done < /tmp/ansible_files/packages
 
 addTasks ()
 {
-for i in `ls  /tmp/ansible_files/tasks`; do echo "    - "import_tasks: tasks/$i >> /tmp/ansible_files/run.yml; done
+for i in `ls  $RUNDIR/tasks`; do echo "    - "import_tasks: tasks/$i >> $RUNDIR/run.yml; done
 }
 
 
@@ -129,6 +129,7 @@ addTasks
 # Create directory structure {ansible/ansible.cfg/plays dir/inventory?}
 # start with a basic playbook. Look at simple jobs
 # break the files into packages, services (including handler to restart)
+# ** Break the file holding the information into - playbook name, package, service, template **
 # templates to hold config files.
 # Do i make one big play book to start?
 # then add in seperate playbooks for each "thing" you want to do.
