@@ -14,7 +14,8 @@ IF you run this on older OS's it may get a python issue. Once I do more testing 
 ````
  I.E:
  [playbook_name] [package] [service] [template]
- webserver       nginx     nginx i   ndex.html
+ webserver       nginx     nginx     index.html
+ system_profile  tuned     tuned
  ADD MORE...
 ````
  * Run the script.
