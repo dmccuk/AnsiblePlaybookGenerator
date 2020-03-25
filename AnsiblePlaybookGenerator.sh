@@ -9,6 +9,7 @@
 #set -x
 
 RUNDIR=/tmp/ansible_files
+mkdir $RUNDIR
 
 clearDir ()
 {
@@ -52,14 +53,14 @@ echo "localhost ansible_python_interpreter=/usr/bin/python3" > $RUNDIR/inventory
 questions ()
 {
 echo ""
-echo "Put all the files in the $RUNDIR DIR:"
+echo "Putting all the files in the $RUNDIR DIR:"
 if [ -d "$RUNDIR" ]
 then
     echo " ** OK: Directory $RUNDIR exists. **"
 else
     echo " ** Error: Directory $RUNDIR does not exists. **"
     echo " **     Creating now... **"
-    mkdir $ansible_path
+    mkdir $RUNDIR
 
 fi
 }
@@ -69,8 +70,6 @@ createDirs ()
 echo "Creating the other directories we need"
 mkdir -p $RUNDIR/{tasks,templates}
 touch $RUNDIR/run.yml
-
-ls -al $RUNDIR
 }
 
 startRunYml ()
@@ -131,6 +130,7 @@ addTasks ()
 {
 #for i in `ls  $RUNDIR/tasks`; do echo "    - "import_tasks: tasks/$i | >> $RUNDIR/run.yml; done
 for i in `ls  $RUNDIR/tasks`; do sed -i "/handlers:/i\    \- import_tasks: tasks\/$i" $RUNDIR/run.yml; done
+ls -al $RUNDIR
 }
 
 

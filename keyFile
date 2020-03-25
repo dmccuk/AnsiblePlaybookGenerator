@@ -1,2 +1,1 @@
 webserver nginx nginx index.html
-systemd_profile tuned tuned
