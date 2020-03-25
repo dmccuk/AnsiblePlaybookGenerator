@@ -90,12 +90,12 @@ while LST= read -r playbook_name package service template; do
 cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
 # Create the playbook with required content
 ---
-- name: install package
+- name: install package $package
   package:
     name: $package
     state: present
 
-- name: Enable service
+- name: Enable service $service
   service:
     name: $service
     enabled: yes
