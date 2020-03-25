@@ -1,6 +1,9 @@
 # AnsiblePlaybookGenerator
 This script is under construction and will be subject to lots of change...
 
+## Pre-reqs!
+ * You must be using ansible 2.4 or above.
+
 The idea is to create a base ansible playbook for your packages, services, templates (including handlers). Think of it as a quick start to getting you up and running with ansible without have to write too much intitally.
 
 ## Only tested on RHEL 8 & Ubuntu (Bionic) 18.04.
