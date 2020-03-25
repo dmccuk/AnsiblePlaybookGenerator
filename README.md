@@ -1,10 +1,10 @@
 # AnsiblePlaybookGenerator
 This script is under construction and will be subject to lots of change...
 
-The ides is to create a base ansible playbook for your packages, services, templates and users. Think of it as a quick start to getting you up and running with ansible without have to write too much.
+The idea is to create a base ansible playbook for your packages, services, templates (including handlers). Think of it as a quick start to getting you up and running with ansible without have to write too much intitally.
 
 ## Only tested on RHEL 8 & Ubuntu (Bionic) 18.04.
-IF you run this on older OS's it may get a python issue. Once I do more testing I'll be able to update the script and detect which version is running. If you're running it on earlier OS'd, and you get any python issue, try removing the variable from the inventory file and re-running.
+If you run this on older OS's it may get a python issue (it trys to install some python2 packages). Once I do more testing I'll be able to update the script and detect which version is running. If you're running it on earlier OS'd, and you get any python issue, try removing the variable from the inventory file and re-running.
 
 ### How to run it:
  * Clone this repo.
@@ -27,7 +27,7 @@ IF you run this on older OS's it may get a python issue. Once I do more testing 
 ### Running the script:
 The ansible code only builds for localhost right now. I'm thinking about providing a config file that can store the options you need to build the correct ansible code for your use-case.
 
-run the playbook and it will install whatever packages you listed in the packages file and also enable and start the services.
+Run the playbook and it will install whatever packages you listed in the packages file and also enable and start the services.
 
 I.E:
 ````
