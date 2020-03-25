@@ -11,10 +11,12 @@ IF you run this on older OS's it may get a python issue. Once I do more testing 
  * CD into the AnsiblePlaybookGenerator directory.
  * Check the script so you know it's safe [don't trust me!]
  * Makes changes to the keyFile. In this order:
+````
  I.E:
  [playbook_name] [package] [service] [template]
  webserver       nginx     nginx i   ndex.html
  ADD MORE...
+````
  * Run the script.
  * Once the script has run, it will create a new directory in /tmp/ansible_files. CD into this directory.
  * Update the "packages" file with the package AND service (sometimes these are different.
