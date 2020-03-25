@@ -25,13 +25,14 @@ If you run this on older OS's it may get a python issue (it trys to install some
  * Once the script has run, it will create a new directory in /tmp/ansible_files. CD into this directory.
  * The script creates a local inventory file with the RHEL8 vars to enforce the python3 interpreter.
  * The script creates you a local ansile.cfg file with some base options.
- * Run the script again. This time it will create the finished tasks and run.yaml with your updated info.
+ * The script creates a run.yml file including tasks from the tasks directory.
  * Once the script has finished, you will still need to populate the template file and also select the destination you want the file to be copied over to.
+ * As you make those updates, running ansible will enforce them.
  
 ### Running the script:
 The ansible code only builds for localhost right now. I'm thinking about providing a config file that can store the options you need to build the correct ansible code for your use-case.
 
-Run the playbook and it will install whatever packages you listed in the packages file and also enable and start the services.
+Run the playbook and it will install and setup the packages you added into the keyFile.
 
 I.E:
 ````
