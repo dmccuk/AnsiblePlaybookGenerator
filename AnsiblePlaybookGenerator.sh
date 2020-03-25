@@ -8,7 +8,7 @@
 #Uncomment below for debugging
 #set -x
 
-RUNDIR=/opt/ansible_files
+RUNDIR=/tmp/ansible_files
 
 clearDir ()
 {
