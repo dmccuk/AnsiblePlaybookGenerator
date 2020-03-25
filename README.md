@@ -24,9 +24,9 @@ If you run this on older OS's it may get a python issue (it trys to install some
  * Run the script.
  * Once the script has run, it will create a new directory in /tmp/ansible_files. CD into this directory.
  * The script creates a local inventory file with the RHEL8 vars to enforce the python3 interpreter.
- * The script creates you a local ansile.cfg file with some base options.
+ * The script creates you a local ansible.cfg file with some base options.
  * The script creates a run.yml file including tasks from the tasks directory.
- * Once the script has finished, you will still need to populate the template file and also select the destination you want the file to be copied over to.
+ * Once the script has finished, you will still need to populate any template files you added and also select the destination you want the file to be copied over to.
  * As you make those updates, running ansible will enforce them.
  
 ### Running the script:
