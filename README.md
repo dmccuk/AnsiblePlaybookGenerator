@@ -19,17 +19,9 @@ IF you run this on older OS's it may get a python issue. Once I do more testing 
 ````
  * Run the script.
  * Once the script has run, it will create a new directory in /tmp/ansible_files. CD into this directory.
- * Update the "packages" file with the package AND service (sometimes these are different.
  * The script creates a local inventory file with the RHEL8 vars to enforce the python3 interpreter.
  * The script creates you a local ansile.cfg file with some base options.
-
-IE:
-````
-# cat packages
-tuned tuned
-nginx nginx
-````
- * now run the script again. This time it will create the finished tasks and run.yaml.
+ * Run the script again. This time it will create the finished tasks and run.yaml with your updated info.
  
 ### Running the script:
 The ansible code only builds for localhost right now. I'm thinking about providing a config file that can store the options you need to build the correct ansible code for your use-case.
