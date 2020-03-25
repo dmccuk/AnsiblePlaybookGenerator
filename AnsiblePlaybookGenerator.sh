@@ -2,7 +2,8 @@
 #
 ## Ansible playbook generator
 #
-## v.0.01
+## v.0.01 - Dennis McCarthy
+### www.londoniac.co.uk
 
 #Uncomment below for debugging
 #set -x
