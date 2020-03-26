@@ -23,8 +23,21 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  
 ### How to run it (more detail):
  * Clone this repo.
- * CD into the AnsiblePlaybookGenerator directory. This is the structure:
+ * CD into the AnsiblePlaybookGenerator directory.
+ * Check the script so you know it's safe [don't trust me!]
+ * Make changes to the keyFile. In this order:
 ````
+ I.E: (you don;t need to space them out in columns, just a space between them is enough)
+ [playbook_name] [package] [service] [template] #<-- this is and example line and not in the actual keyFile.
+ webserver       nginx     nginx     index.html
+ vsftpd vsftpd vsftpd
+ wget wget
+ curl curl
+ ADD MORE...
+````
+ * Run the script.
+ * Once the script has run, it will create a new directory /tmp/ansible_files with the structure and files in place. CD into this directory. This is the structure:
+ ````
 .
 ├── ansible.cfg
 ├── group_vars
@@ -41,19 +54,6 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
 
 3 directories, 9 files
 ````
- * Check the script so you know it's safe [don't trust me!]
- * Make changes to the keyFile. In this order:
-````
- I.E: (you don;t need to space them out in columns, just a space between them is enough)
- [playbook_name] [package] [service] [template] #<-- this is and example line and not in the actual keyFile.
- webserver       nginx     nginx     index.html
- vsftpd vsftpd vsftpd
- wget wget
- curl curl
- ADD MORE...
-````
- * Run the script.
- * Once the script has run, it will create a new directory /tmp/ansible_files with the structure and files in place. CD into this directory.
  * The script creates a local inventory file with vars to enforce the python3 interpreter.
  * The script creates you a local ansible.cfg file with some base options.
  * The script creates a run.yml file including tasks from the tasks directory (and home to the handlers).
