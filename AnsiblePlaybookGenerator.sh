@@ -17,6 +17,7 @@ clearDir ()
 rm -fr $RUNDIR/tasks/*
 rm -fr $RUNDIR/run.yml
 rm -fr $RUNDIR/templates/*
+rm -fr $RUNDIR/group_vars/*
 }
 
 ansibleCFG ()
@@ -73,7 +74,7 @@ createDirs ()
 {
 # create the DIRS and files required
 echo "Creating the other directories we need"
-mkdir -p $RUNDIR/{tasks,templates}
+mkdir -p $RUNDIR/{tasks,templates,group_vars}
 touch $RUNDIR/run.yml
 }
 
@@ -94,17 +95,24 @@ checkKeyFile ()
 # while loop to read through the keyFile
 # and generates the playbooks/templates
 while LST= read -r playbook_name package service template; do
+
+cat << EOF >> $RUNDIR/group_vars/all
+---
+${playbook_name}_package: $package
+${playbook_name}_service: $service
+EOF
+
 cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
 # Create the playbook with required content
 ---
 - name: install package $package
   package:
-    name: $package
+    name: "{{ ${playbook_name}_package }}"
     state: present
 
 - name: Enable service $service
   service:
-    name: $service
+    name: "{{ ${playbook_name}_service }}"
     enabled: yes
     state: started
 EOF
