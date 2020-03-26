@@ -13,6 +13,7 @@ mkdir $RUNDIR
 
 clearDir ()
 {
+# Fresh Start
 rm -fr $RUNDIR/tasks/*
 rm -fr $RUNDIR/run.yml
 rm -fr $RUNDIR/templates/*
@@ -20,6 +21,7 @@ rm -fr $RUNDIR/templates/*
 
 ansibleCFG ()
 {
+# basic ansible.cfg file. Update as required
 if [ -f "$RUNDIR/ansible.cfg" ]
 then
     echo " ** OK: ansible.cfg exists. **"
@@ -47,11 +49,13 @@ fi
 
 inventory ()
 {
+# populate the inventory file with localhost and force python3
 echo "localhost ansible_python_interpreter=/usr/bin/python3" > $RUNDIR/inventory
 }
 
-questions ()
+checkDirs ()
 {
+# checks on the DIR structure
 echo ""
 echo "Putting all the files in the $RUNDIR DIR:"
 if [ -d "$RUNDIR" ]
@@ -67,6 +71,7 @@ fi
 
 createDirs ()
 {
+# create the DIRS and files required
 echo "Creating the other directories we need"
 mkdir -p $RUNDIR/{tasks,templates}
 touch $RUNDIR/run.yml
@@ -74,6 +79,7 @@ touch $RUNDIR/run.yml
 
 startRunYml ()
 {
+# Start to populate the run.yml
 cat << EOF >> $RUNDIR/run.yml
 ---
 - hosts: localhost
@@ -86,6 +92,7 @@ EOF
 checkKeyFile ()
 {
 # while loop to read through the keyFile
+# and generates the playbooks/templates
 while LST= read -r playbook_name package service template; do
 cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
 # Create the playbook with required content
@@ -128,7 +135,7 @@ done < keyFile
 
 addTasks ()
 {
-#for i in `ls  $RUNDIR/tasks`; do echo "    - "import_tasks: tasks/$i | >> $RUNDIR/run.yml; done
+# Add the playbooks generated to the run.yml file.
 for i in `ls  $RUNDIR/tasks`; do sed -i "/handlers:/i\    \- import_tasks: tasks\/$i" $RUNDIR/run.yml; done
 ls -al $RUNDIR
 }
@@ -137,7 +144,7 @@ ls -al $RUNDIR
 clearDir
 ansibleCFG
 inventory
-questions
+checkDirs
 createDirs
 startRunYml
 checkKeyFile
