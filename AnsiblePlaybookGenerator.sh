@@ -90,6 +90,14 @@ cat << EOF >> $RUNDIR/run.yml
 EOF
 }
 
+startGroupVars ()
+{
+# Start to populate the run.yml
+cat << EOF >> $RUNDIR/group_vars/all
+---
+EOF
+}
+
 checkKeyFile ()
 {
 # while loop to read through the keyFile
@@ -97,18 +105,22 @@ checkKeyFile ()
 while LST= read -r playbook_name package service template; do
 
 cat << EOF >> $RUNDIR/group_vars/all
----
 ${playbook_name}_package: $package
-${playbook_name}_service: $service
 EOF
 
-cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
 # Create the playbook with required content
+cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
 ---
 - name: install package $package
   package:
     name: "{{ ${playbook_name}_package }}"
     state: present
+EOF
+
+# Only add the service if it's in the keyFile
+if [ ! -z "$service" ]
+then
+cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
 
 - name: Enable service $service
   service:
@@ -116,7 +128,12 @@ cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
     enabled: yes
     state: started
 EOF
+cat << EOF >> $RUNDIR/group_vars/all
+${playbook_name}_service: $service
+EOF
+fi
 
+# Only add the template if it's in the keyFile
 if [ ! -z "$template" ]
 then
 cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
@@ -127,7 +144,8 @@ cat << EOF >> $RUNDIR/tasks/$playbook_name.yml
   notify:
   -  restart $package
 EOF
-
+# Also add the handler as the service will need restarting
+# if the template is updated
 cat << EOF >> $RUNDIR/run.yml
   handlers:
     - name: restart $package
@@ -137,7 +155,6 @@ cat << EOF >> $RUNDIR/run.yml
 EOF
 echo "Add stuff to me!" >> $RUNDIR/templates/$template.j2
 fi
-# The keyFile is in the same DIR at the AnsiblePlaybookGenerator script.
 done < keyFile
 }
 
@@ -148,26 +165,14 @@ for i in `ls  $RUNDIR/tasks`; do sed -i "/handlers:/i\    \- import_tasks: tasks
 ls -al $RUNDIR
 }
 
-
+# Call the functions below:
 clearDir
 ansibleCFG
 inventory
 checkDirs
 createDirs
 startRunYml
+startGroupVars
 checkKeyFile
 addTasks
-
-
-
-# Create directory structure {ansible/ansible.cfg/plays dir/inventory?}
-# start with a basic playbook. Look at simple jobs
-# break the files into packages, services (including handler to restart)
-# ** Break the file holding the information into - playbook name, package, service, template **
-# templates to hold config files.
-# Do i make one big play book to start?
-# then add in seperate playbooks for each "thing" you want to do.
-# What should i do about variables?
-# Do i also want to generate local facts? so information about a host
-# I can add to a vars file to make playbooks run on lots of different hosts?
 

@@ -1,1 +1,4 @@
 webserver nginx nginx index.html
+vsftpd vsftpd vsftpd
+wget wget
+curl curl
