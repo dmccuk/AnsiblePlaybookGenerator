@@ -14,7 +14,14 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  * Templates are now supported.
  * Added support for packages that don't have a service. Just leave the service column blank and it won't be added.
 
-### How to run it:
+### Quick-Start!
+ * Clone the repo & cd AnsiblePlaybookGenerator
+ * run the script: ./AnsiblePlaybookGenerator.sh
+ * cd /tmp/ansible_files & run (as root): # ansible-playbook -i inventory run.yml
+ * Watch the playbook run and install nginx, curl, wget & vsftp.
+ * Now have a look around at ansible playbooks, templates & group_vars and enjoy :)
+ 
+### How to run it (more detail):
  * Clone this repo.
  * CD into the AnsiblePlaybookGenerator directory.
  * Check the script so you know it's safe [don't trust me!]
