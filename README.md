@@ -23,7 +23,24 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  
 ### How to run it (more detail):
  * Clone this repo.
- * CD into the AnsiblePlaybookGenerator directory.
+ * CD into the AnsiblePlaybookGenerator directory. This is the structure:
+````
+.
+├── ansible.cfg
+├── group_vars
+│   └── all
+├── inventory
+├── run.yml
+├── tasks
+│   ├── curl.yml
+│   ├── vsftpd.yml
+│   ├── webserver.yml
+│   └── wget.yml
+└── templates
+    └── index.html.j2
+
+3 directories, 9 files
+````
  * Check the script so you know it's safe [don't trust me!]
  * Make changes to the keyFile. In this order:
 ````
