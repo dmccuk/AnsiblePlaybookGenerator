@@ -13,6 +13,7 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  * Added (variables) to groups_vars to take the package and service name out of the tasks .yml file.
  * Templates are now supported.
  * Added support for packages that don't have a service. Just leave the service column blank and it won't be added.
+ * Resolved an issue with more than one template in the keyFile. Multiple templates and handlers are now supported.
 
 ### Quick-Start
  * Clone the repo & cd AnsiblePlaybookGenerator
