@@ -87,6 +87,7 @@ cat << EOF >> $RUNDIR/run.yml
   connection: local
 
   tasks:
+  handlers:
 EOF
 }
 
@@ -147,7 +148,6 @@ EOF
 # Also add the handler as the service will need restarting
 # if the template is updated
 cat << EOF >> $RUNDIR/run.yml
-  handlers:
     - name: restart $package
       service:
         name: $package
@@ -161,7 +161,8 @@ done < keyFile
 addTasks ()
 {
 # Add the playbooks generated to the run.yml file.
-for i in `ls  $RUNDIR/tasks`; do sed -i "/handlers:/i\    \- import_tasks: tasks\/$i" $RUNDIR/run.yml; done
+for i in `ls  $RUNDIR/tasks`; do sed -i "/tasks:/a\    \- import_tasks- tasks\/$i" $RUNDIR/run.yml; done
+sed -i 's/import_tasks-/import_tasks:/g' $RUNDIR/run.yml
 ls -al $RUNDIR
 }
 
