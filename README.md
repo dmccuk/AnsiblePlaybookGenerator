@@ -16,6 +16,7 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  * Resolved an issue with more than one template in the keyFile. Multiple templates and handlers are now supported.
 
 ### Quick-Start
+ * Watch the Demo on youtube: https://youtu.be/6AbGNaoFcIk
  * Clone the repo & cd AnsiblePlaybookGenerator
  * run the script: ./AnsiblePlaybookGenerator.sh
  * cd /tmp/ansible_files & run (as root): # ansible-playbook -i inventory run.yml
