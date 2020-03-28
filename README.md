@@ -23,6 +23,7 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  * Now have a look around at ansible playbooks, templates & group_vars - enjoy :)
  
 ### How to run it (more detail):
+ * Watch the Demo on youtube: https://youtu.be/6AbGNaoFcIk
  * Clone this repo.
  * CD into the AnsiblePlaybookGenerator directory.
  * Check the script so you know it's safe [don't trust me!]
