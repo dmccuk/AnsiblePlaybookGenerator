@@ -85,6 +85,7 @@ cat << EOF >> $RUNDIR/run.yml
 ---
 - hosts: localhost
   connection: local
+  gather_facts: true
 
   tasks:
   handlers:
@@ -153,7 +154,13 @@ cat << EOF >> $RUNDIR/run.yml
         name: $package
         state: restarted
 EOF
-echo "Add stuff to me!" >> $RUNDIR/templates/$template.j2
+
+cat << EOF >> $RUNDIR/templates/$template.j2
+Add stuff to me!
+
+Ansible_facts example:
+Servername: {{ ansible_hostname }}
+EOF
 fi
 done < keyFile
 }
