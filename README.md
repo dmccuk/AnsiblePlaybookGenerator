@@ -14,6 +14,7 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  * Templates are now supported.
  * Added support for packages that don't have a service. Just leave the service column blank and it won't be added.
  * Resolved an issue with more than one template in the keyFile. Multiple templates and handlers are now supported.
+ * Added an ansible fact example to the templates (added gather_facts: true)
 
 ### Quick-Start
  * Watch the Demo on youtube: https://youtu.be/6AbGNaoFcIk
