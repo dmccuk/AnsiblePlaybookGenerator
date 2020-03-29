@@ -4,8 +4,13 @@
 
 # Set to group name in inventory
 # Can be localhost/all/[group_name]
-hosts=all
+hosts=localhost
+
+# Connection should be set to SSH if running
+# Ansible against remote servers.
+# Can be local or ssh
+connection=local
 
 # Change gather fact value. Default is true
 # can be true or false
-facts=false
+facts=true

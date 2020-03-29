@@ -85,7 +85,7 @@ startRunYml ()
 cat << EOF >> $RUNDIR/run.yml
 ---
 - hosts: $hosts
-  connection: local
+  connection: $connection
   gather_facts: $facts
 
   tasks:
