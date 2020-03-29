@@ -15,6 +15,7 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  * Added support for packages that don't have a service. Just leave the service column blank and it won't be added.
  * Resolved an issue with more than one template in the keyFile. Multiple templates and handlers are now supported.
  * Added an ansible fact example to the templates (added gather_facts: true)
+ * Added a control file to "pre-set" variables in the playbooks. Currently only limited to hosts & gather_facts. It gives you a way to set certain variables if you wish before you create the code. 
 
 ### Quick-Start
  * Watch the Demo on youtube: https://youtu.be/6AbGNaoFcIk
