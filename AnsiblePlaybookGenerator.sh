@@ -8,6 +8,7 @@
 #Uncomment below for debugging
 #set -x
 
+source controlFile
 RUNDIR=/tmp/ansible_files
 mkdir $RUNDIR
 
@@ -83,9 +84,9 @@ startRunYml ()
 # Start to populate the run.yml
 cat << EOF >> $RUNDIR/run.yml
 ---
-- hosts: localhost
+- hosts: $hosts
   connection: local
-  gather_facts: true
+  gather_facts: $facts
 
   tasks:
   handlers:

@@ -1,0 +1,11 @@
+# Control file for AnsiblePlaybookGenerator
+
+# Below are the control variables:
+
+# Set to group name in inventory
+# Can be localhost/all/[group_name]
+hosts=all
+
+# Change gather fact value. Default is true
+# can be true or false
+facts=false
