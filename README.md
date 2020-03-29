@@ -117,22 +117,31 @@ $ systemctl -a | egrep "nginx|vsftp"
 Currently it only installs packages, sets up the services & templates, adds a handler to restart the service if the template changes and sets up variables in group_vars for package and service names. I'll be adding additional functionality when I get the time and will try to make it even more useful as I update it.
 
 ### Run the script (for remote hosts)
-This works with a quick update to the run.yml file. Change the localhost to All (or whatever group you are using in the inventory file)
+You only need to make two changes:
 
-This:
+1) Change these options in the controlFile:
 ````
-$ cat run.yml
----
-- hosts: localhost
-  connection: local
-````
-Becomes:
-````
-$ cat run.yml
----
-- hosts: all
+$ cat controlFile
+# Control file for AnsiblePlaybookGenerator
 
+# Below are the control variables:
+
+# Set to group name in inventory
+# Can be localhost/all/[group_name]
+hosts=all
+
+# Connection should be set to SSH if running
+# Ansible against remote servers.
+# Can be local or ssh
+connection=ssh
+
+# Change gather fact value. Default is true
+# can be true or false
+facts=true
 ````
+
+2) Re run the script to re-generate the ansible files. Alternatively, you could just update the run.yml file instead with the new values.
+
 
 If you run the playbook remotely, you can add various options to login to the remote server. For me, I setup SSH keys and just select the user by adding -u ubuntu on to the end of the playbook command.
 
