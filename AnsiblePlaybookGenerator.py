@@ -15,6 +15,7 @@ become_ask_path = False
 scp_if_true = True
 timeout = 10"""
 
+
 def ParseKeyFile():
     playbook_name, package, service, template = ([] for i in range(4))
     with open("keyFile") as myfile:
@@ -27,6 +28,7 @@ def ParseKeyFile():
         except IndexError:
             pass
         return(playbook_name, package, service, template)
+
 
 def ParseControlFile():
     myvars = {}
