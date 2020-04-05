@@ -2,3 +2,4 @@ webserver nginx nginx index.html
 vsftpd vsftpd vsftpd vsftpd.conf
 wget wget
 curl curl
+

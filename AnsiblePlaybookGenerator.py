@@ -19,14 +19,14 @@ timeout = 10"""
 def ParseKeyFile():
     playbook_name, package, service, template = ([] for i in range(4))
     with open("keyFile") as myfile:
-        try:
-            for line in myfile:
-                playbook_name.append(line.split()[0])
-                package.append(line.split()[1])
-                service.append(line.split()[2])
-                template.append(line.split()[3])
-        except IndexError:
-            pass
+        for line in myfile:
+                try:
+                    playbook_name.append(line.split()[0])
+                    package.append(line.split()[1])
+                    service.append(line.split()[2])
+                    template.append(line.split()[3])
+                except IndexError:
+                    pass
         return(playbook_name, package, service, template)
 
 
@@ -85,6 +85,7 @@ def RunYml(path, config):
 def GroupVars(path, config):
     print("TODO")
 
+ParseKeyFile()
 keyVars = ParseKeyFile()
 controlVars = ParseControlFile()
 RUN_YML_TEMPLATE = f"""---
