@@ -17,10 +17,13 @@ timeout = 10"""
 
 
 def CleanUp(path):
-    os.makedirs(f'{path}/tasks', exist_ok=True)
-    os.makedirs(f'{path}/templates', exist_ok=True)
-    os.makedirs(f'{path}/group_vars', exist_ok=True)
+    shutil.rmtree(f'{path}/tasks')
+    shutil.rmtree(f'{path}/templates')
+    shutil.rmtree(f'{path}/group_vars')
     os.remove(f'{path}/run.yml')
+    os.makedirs(f'{path}/tasks')
+    os.makedirs(f'{path}/templates')
+    os.makedirs(f'{path}/group_vars')
     open(f'{path}/run.yml', 'a').close()
 
 
