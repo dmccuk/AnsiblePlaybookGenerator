@@ -121,3 +121,4 @@ GroupVars(PATH, GROUP_VARS_TEMPLATE)
 # A lot happens to RunYml file, can it be done in one place?
 # Path is used by everything, keen to refactor that out
 # My write functions are extremely shallow functions
+# Mind you, should RUN_YML_TEMPLATE be a function?
