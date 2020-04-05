@@ -98,15 +98,22 @@ def GroupVars(path, config):
     with open(f'{path}/group_vars/all', 'w+') as groupvars:
         groupvars.write(config)
 
+
+def RunYmlTemplate(controlfile, keyfile):
+    config = f"""---
+- hosts: {controlfile['hosts']}
+  connection: {controlfile['connection']}
+  gather_facts: {controlfile['facts']}
+
+  tasks:
+  handlers:"""
+    return config
+
+
 ParseKeyFile()
 keyVars = ParseKeyFile()
 controlVars = ParseControlFile()
-RUN_YML_TEMPLATE = f"""---
-- hosts: {controlVars['hosts']}
-  connection: {controlVars['connection']}
-  gather_facts: {controlVars['facts']}
-  tasks:
-  handlers:"""
+RUN_YML_TEMPLATE = RunYmlTemplate(controlVars, keyVars)
 
 CheckPath(PATH)
 CleanUp(PATH)
@@ -121,4 +128,4 @@ GroupVars(PATH, GROUP_VARS_TEMPLATE)
 # A lot happens to RunYml file, can it be done in one place?
 # Path is used by everything, keen to refactor that out
 # My write functions are extremely shallow functions
-# Mind you, should RUN_YML_TEMPLATE be a function?
+# Mind you, should RUN_YML_TEMPLATE be a function? - Should be, given there's more to it
