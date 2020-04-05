@@ -107,8 +107,8 @@ def PlaybookNameTemplate(path, keyfile):
 - name: install package {keyfile[1][0]}
   package:
     name: "{{{{ {keyfile[0][0]}_package }}}}"
-    state: present
-
+    state: present"""
+        config = config + f"""
 - name: Enable service {keyfile[2][0]}
   service:
     name: "{{{{ {keyfile[0][0]}_service }}}}"
