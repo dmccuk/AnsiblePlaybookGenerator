@@ -15,6 +15,18 @@ become_ask_path = False
 scp_if_true = True
 timeout = 10"""
 
+def ParseKeyFile():
+    playbook_name, package, service, template = ([] for i in range(4))
+    with open("keyFile") as myfile:
+        try:
+            for line in myfile:
+                playbook_name.append(line.split()[0])
+                package.append(line.split()[1])
+                service.append(line.split()[2])
+                template.append(line.split()[3])
+        except IndexError:
+            pass
+        return(playbook_name, package, service, template)
 
 def ParseControlFile():
     myvars = {}
@@ -67,7 +79,7 @@ def RunYml(path, config):
     with open(f'{path}/run.yml', 'w+') as run:
         run.write(config)
 
-
+keyVars = ParseKeyFile()
 controlVars = ParseControlFile()
 RUN_YML_TEMPLATE = f"""---
 - hosts: {controlVars['hosts']}
