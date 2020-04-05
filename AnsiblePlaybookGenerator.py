@@ -81,6 +81,10 @@ def RunYml(path, config):
     with open(f'{path}/run.yml', 'w+') as run:
         run.write(config)
 
+
+def GroupVars(path, config):
+    print("TODO")
+
 keyVars = ParseKeyFile()
 controlVars = ParseControlFile()
 RUN_YML_TEMPLATE = f"""---
@@ -96,6 +100,12 @@ CreateAll(PATH)
 AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
 Inventory(PATH)
 RunYml(PATH, RUN_YML_TEMPLATE)
+#GroupVars(PATH, GROUP_VARS_TEMPLATE)
+
+
+lenkeyfile = len(keyVars[0])
+for i in range(lenkeyfile):
+    print(f'{keyVars[0][i]},{keyVars[1][i]}')
 
 # Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor.
 # A lot happens to RunYml file, can it be done in one place?
