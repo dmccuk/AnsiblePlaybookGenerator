@@ -102,7 +102,6 @@ Inventory(PATH)
 RunYml(PATH, RUN_YML_TEMPLATE)
 #GroupVars(PATH, GROUP_VARS_TEMPLATE)
 
-
 lenkeyfile = len(keyVars[0])
 for i in range(lenkeyfile):
     try:
