@@ -17,14 +17,15 @@ timeout = 10"""
 
 
 def CleanUp(path):
-    shutil.rmtree(f'{path}/tasks')
-    shutil.rmtree(f'{path}/templates')
-    shutil.rmtree(f'{path}/group_vars')
+    os.makedirs(f'{path}/tasks', exist_ok=True)
+    os.makedirs(f'{path}/templates', exist_ok=True)
+    os.makedirs(f'{path}/group_vars', exist_ok=True)
     os.remove(f'{path}/run.yml')
+    open(f'{path}/run.yml', 'a').close()
 
 
 def AnsibleCfg(path, config):
-    if os.path.isfile(path+'ansible.cfg'):
+    if os.path.isfile(f'{path}/ansible.cfg'):
         print("Config Exists")
     else:
         with open(f'{path}/ansible.cfg', 'w') as ansibleconfig:
