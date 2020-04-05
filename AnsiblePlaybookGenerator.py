@@ -17,8 +17,9 @@ timeout = 10"""
 
 def CheckPath(path):
     if os.path.isdir(path):
-        print("Directory Exists")
+        print(f"Directory {path} Exists")
     else:
+        print(f"Creating Directory {path}")
         os.makedirs(path)
 
 
@@ -35,10 +36,10 @@ def CleanUp(path):
 
 
 def CreateAll(path):
-    os.makedirs(f'{path}/tasks')
-    os.makedirs(f'{path}/templates')
-    os.makedirs(f'{path}/group_vars')
-    open(f'{path}/run.yml', 'a').close()
+    suffixes = ['/tasks', '/templates', '/group_vars']
+    for suffix in suffixes:
+        os.makedirs(f'{path}{suffix}')
+
 
 def AnsibleCfg(path, config):
     with open(f'{path}/ansible.cfg', 'w+') as ansibleconfig:
@@ -49,10 +50,11 @@ def Inventory(path):
     with open(f'{path}/inventory', 'w+') as inventory:
         inventory.write('localhost ansible_python_interpreter=/usr/bin/python3')
 
+
 CheckPath(PATH)
 CleanUp(PATH)
 CreateAll(PATH)
 AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
 Inventory(PATH)
 
-#Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor. Also, why don't we create everything in one place
+# Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor. Also, why don't we create everything in one place
