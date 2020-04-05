@@ -100,9 +100,8 @@ def GroupVars(path, config):
 
 
 def PlaybookNameTemplate(path, keyfile, index):
-    config = ''
     try:
-        config = config + f"""
+        config = f"""
 ---
 - name: install package {keyfile[1][index]}
   package:
