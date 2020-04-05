@@ -82,8 +82,21 @@ def RunYml(path, config):
         run.write(config)
 
 
+def GroupVarsTemplate(keyfile):
+    config = '---\n'
+    lenkeyfile = len(keyfile[0])
+    for i in range(lenkeyfile):
+        try:
+            config = config + f'{keyfile[0][i]}_package: {keyfile[1][i]}\n'
+            config = config + f'{keyfile[0][i]}_service: {keyfile[2][i]}\n'
+        except IndexError:
+            pass
+    return(config.strip())
+
+
 def GroupVars(path, config):
-    print("TODO")
+    with open(f'{path}/group_vars/all', 'w+') as groupvars:
+        groupvars.write(config)
 
 ParseKeyFile()
 keyVars = ParseKeyFile()
@@ -101,15 +114,8 @@ CreateAll(PATH)
 AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
 Inventory(PATH)
 RunYml(PATH, RUN_YML_TEMPLATE)
-#GroupVars(PATH, GROUP_VARS_TEMPLATE)
-
-lenkeyfile = len(keyVars[0])
-for i in range(lenkeyfile):
-    try:
-        print(f'{keyVars[0][i]}_package: {keyVars[1][i]}') #${playbook_name}_package: $package
-        print(f'{keyVars[0][i]}_service: {keyVars[2][i]}')
-    except IndexError:
-        pass
+GROUP_VARS_TEMPLATE = GroupVarsTemplate(keyVars)
+GroupVars(PATH, GROUP_VARS_TEMPLATE)
 
 # Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor.
 # A lot happens to RunYml file, can it be done in one place?
