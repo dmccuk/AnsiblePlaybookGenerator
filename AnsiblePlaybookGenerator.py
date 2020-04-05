@@ -41,12 +41,12 @@ def CreateAll(path):
     open(f'{path}/run.yml', 'a').close()
 
 def AnsibleCfg(path, config):
-    with open(f'{path}/ansible.cfg', 'w') as ansibleconfig:
+    with open(f'{path}/ansible.cfg', 'w+') as ansibleconfig:
         ansibleconfig.write(config)
 
 
 def Inventory(path):
-    with open('f{path}/inventory', 'w') as inventory:
+    with open(f'{path}/inventory', 'w+') as inventory:
         inventory.write('localhost ansible_python_interpreter=/usr/bin/python3')
 
 CheckPath(PATH)
