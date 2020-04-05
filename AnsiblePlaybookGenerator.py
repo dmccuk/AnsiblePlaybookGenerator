@@ -105,7 +105,11 @@ RunYml(PATH, RUN_YML_TEMPLATE)
 
 lenkeyfile = len(keyVars[0])
 for i in range(lenkeyfile):
-    print(f'{keyVars[0][i]},{keyVars[1][i]}')
+    try:
+        print(f'{keyVars[0][i]}_package: {keyVars[1][i]}') #${playbook_name}_package: $package
+        print(f'{keyVars[0][i]}_service: {keyVars[2][i]}')
+    except IndexError:
+        pass
 
 # Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor.
 # A lot happens to RunYml file, can it be done in one place?
