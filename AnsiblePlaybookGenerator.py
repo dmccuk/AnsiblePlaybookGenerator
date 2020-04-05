@@ -99,30 +99,31 @@ def GroupVars(path, config):
         groupvars.write(config)
 
 
-def PlaybookNameTemplate(path, keyfile):
-    config = '---'
-    lenkeyfile = len(keyfile[0])
+def PlaybookNameTemplate(path, keyfile, index):
+    config = ''
     try:
         config = config + f"""
-- name: install package {keyfile[1][0]}
+---
+- name: install package {keyfile[1][index]}
   package:
-    name: "{{{{ {keyfile[0][0]}_package }}}}"
+    name: "{{{{ {keyfile[0][index]}_package }}}}"
     state: present"""
         config = config + f"""
-- name: Enable service {keyfile[2][0]}
+
+- name: Enable service {keyfile[2][index]}
   service:
-    name: "{{{{ {keyfile[0][0]}_service }}}}"
+    name: "{{{{ {keyfile[0][index]}_service }}}}"
     enabled: yes
     state: started
 
 - template:
-    src: {path}/templates/{keyfile[3][0]}.j2
-    dest: /tmp/{keyfile[3][0]} #Change me for the real location...
+    src: {path}/templates/{keyfile[3][index]}.j2
+    dest: /tmp/{keyfile[3][index]} #Change me for the real location...
   notify:
-  -  restart {keyfile[1][0]}"""
+  -  restart {keyfile[1][index]}"""
     except IndexError:
         pass
-    print(config)
+    return(config)
 
 
 def RunYmlTemplate(controlfile, keyfile):
@@ -140,7 +141,8 @@ keyVars = ParseKeyFile()
 controlVars = ParseControlFile()
 RUN_YML_TEMPLATE = RunYmlTemplate(controlVars, keyVars)
 GROUP_VARS_TEMPLATE = GroupVarsTemplate(keyVars)
-PlaybookNameTemplate(PATH, keyVars)
+#for i in range(len(keyVars)):
+#    PlaybookNameTemplate(PATH, keyVars, i)
 CheckPath(PATH)
 CleanUp(PATH)
 CreateAll(PATH)
@@ -153,4 +155,3 @@ GroupVars(PATH, GROUP_VARS_TEMPLATE)
 # A lot happens to RunYml file, can it be done in one place?
 # Path is used by everything, keen to refactor that out
 # My write functions are extremely shallow functions
-# Mind you, should RUN_YML_TEMPLATE be a function? - Should be, given there's more to it
