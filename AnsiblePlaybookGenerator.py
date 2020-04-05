@@ -2,12 +2,6 @@ import shutil
 import os
 
 PATH = '/tmp/ansible_files'
-RUN_YML_TEMPLATE = """---
-- hosts: $hosts
-  connection: $connection
-  gather_facts: $facts
-  tasks:
-  handlers:"""
 ANSIBLE_CONFIG_TEMPLATE = """[default]
 timeout=10
 private_key_file = ~/.ssh/id_rsa
@@ -20,6 +14,18 @@ become_ask_path = False
 [ssh_connection]
 scp_if_true = True
 timeout = 10"""
+
+
+def ParseControlFile():
+    myvars = {}
+    with open("controlFile") as myfile:
+        for line in myfile:
+            li = line.strip()
+            if not li.startswith("#") and not line.isspace():
+                name, var = line.partition("=")[::2]
+                myvars[name.rstrip()] = var.replace('\n', '')
+    return myvars
+
 
 def CheckPath(path):
     if os.path.isdir(path):
@@ -56,9 +62,19 @@ def Inventory(path):
     with open(f'{path}/inventory', 'w+') as inventory:
         inventory.write('localhost ansible_python_interpreter=/usr/bin/python3')
 
+
 def RunYml(path, config):
-     with open(f'{path}/run.yml', 'w+') as run:
-         run.write(config)
+    with open(f'{path}/run.yml', 'w+') as run:
+        run.write(config)
+
+
+controlVars = ParseControlFile()
+RUN_YML_TEMPLATE = f"""---
+- hosts: {controlVars['hosts']}
+  connection: {controlVars['connection']}
+  gather_facts: {controlVars['facts']}
+  tasks:
+  handlers:"""
 
 CheckPath(PATH)
 CleanUp(PATH)
