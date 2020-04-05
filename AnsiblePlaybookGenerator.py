@@ -99,6 +99,32 @@ def GroupVars(path, config):
         groupvars.write(config)
 
 
+def PlaybookNameTemplate(path, keyfile):
+    config = '---'
+    lenkeyfile = len(keyfile[0])
+    try:
+        config = config + f"""
+- name: install package {keyfile[1][0]}
+  package:
+    name: "{{{{ {keyfile[0][0]}_package }}}}"
+    state: present
+
+- name: Enable service {keyfile[2][0]}
+  service:
+    name: "{{{{ {keyfile[0][0]}_service }}}}"
+    enabled: yes
+    state: started
+
+- template:
+    src: {path}/templates/{keyfile[3][0]}.j2
+    dest: /tmp/{keyfile[3][0]} #Change me for the real location...
+  notify:
+  -  restart {keyfile[1][0]}"""
+    except IndexError:
+        pass
+    print(config)
+
+
 def RunYmlTemplate(controlfile, keyfile):
     config = f"""---
 - hosts: {controlfile['hosts']}
@@ -110,18 +136,17 @@ def RunYmlTemplate(controlfile, keyfile):
     return config
 
 
-ParseKeyFile()
 keyVars = ParseKeyFile()
 controlVars = ParseControlFile()
 RUN_YML_TEMPLATE = RunYmlTemplate(controlVars, keyVars)
-
+GROUP_VARS_TEMPLATE = GroupVarsTemplate(keyVars)
+PlaybookNameTemplate(PATH, keyVars)
 CheckPath(PATH)
 CleanUp(PATH)
 CreateAll(PATH)
 AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
 Inventory(PATH)
 RunYml(PATH, RUN_YML_TEMPLATE)
-GROUP_VARS_TEMPLATE = GroupVarsTemplate(keyVars)
 GroupVars(PATH, GROUP_VARS_TEMPLATE)
 
 # Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor.
