@@ -2,6 +2,12 @@ import shutil
 import os
 
 PATH = '/tmp/ansible_files'
+RUN_YML_TEMPLATE = """---
+- hosts: $hosts
+  connection: $connection
+  gather_facts: $facts
+  tasks:
+  handlers:"""
 ANSIBLE_CONFIG_TEMPLATE = """[default]
 timeout=10
 private_key_file = ~/.ssh/id_rsa
@@ -50,11 +56,16 @@ def Inventory(path):
     with open(f'{path}/inventory', 'w+') as inventory:
         inventory.write('localhost ansible_python_interpreter=/usr/bin/python3')
 
+def RunYml(path, config):
+     with open(f'{path}/run.yml', 'w+') as run:
+         run.write(config)
 
 CheckPath(PATH)
 CleanUp(PATH)
 CreateAll(PATH)
 AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
 Inventory(PATH)
+RunYml(PATH, RUN_YML_TEMPLATE)
 
-# Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor. Also, why don't we create everything in one place
+# Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor.
+# A lot happens to RunYml file, can it be done in one place?
