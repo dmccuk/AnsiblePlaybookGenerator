@@ -2,7 +2,7 @@ import shutil
 import os
 
 PATH = '/tmp/ansible_files'
-CONFIG_TEMPLATE ="""[default]
+ANSIBLE_CONFIG_TEMPLATE = """[default]
 timeout=10
 private_key_file = ~/.ssh/id_rsa
 host_key_checking = False
@@ -17,10 +17,10 @@ timeout = 10"""
 
 
 def CleanUp(path):
-    shutil.rmtree(path+'/tasks')
-    shutil.rmtree(path+'/templates')
-    shutil.rmtree(path+'/group_vars')
-    os.remove(path+'/run.yml')
+    shutil.rmtree(f'{path}/tasks')
+    shutil.rmtree(f'{path}/templates')
+    shutil.rmtree(f'{path}/group_vars')
+    os.remove(f'{path}/run.yml')
 
 
 def AnsibleCfg(path, config):
@@ -31,5 +31,12 @@ def AnsibleCfg(path, config):
             ansibleconfig.write(config)
 
 
+def Inventory(path):
+    with open('f{path}/inventory') as inventory:
+        inventory.write('localhost ansible_python_interpreter=/usr/bin/python3')
+
+
 CleanUp(PATH)
-AnsibleCfg(PATH, CONFIG_TEMPLATE)
+AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
+
+#Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor.
