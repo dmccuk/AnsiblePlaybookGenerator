@@ -15,32 +15,44 @@ become_ask_path = False
 scp_if_true = True
 timeout = 10"""
 
+def CheckPath(path):
+    if os.path.isdir(path):
+        print("Directory Exists")
+    else:
+        os.makedirs(path)
+
 
 def CleanUp(path):
-    shutil.rmtree(f'{path}/tasks')
-    shutil.rmtree(f'{path}/templates')
-    shutil.rmtree(f'{path}/group_vars')
-    os.remove(f'{path}/run.yml')
+    for filename in os.listdir(f'{path}/'):
+        file_path = os.path.join(path, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+
+def CreateAll(path):
     os.makedirs(f'{path}/tasks')
     os.makedirs(f'{path}/templates')
     os.makedirs(f'{path}/group_vars')
     open(f'{path}/run.yml', 'a').close()
 
-
 def AnsibleCfg(path, config):
-    if os.path.isfile(f'{path}/ansible.cfg'):
-        print("Config Exists")
-    else:
-        with open(f'{path}/ansible.cfg', 'w') as ansibleconfig:
-            ansibleconfig.write(config)
+    with open(f'{path}/ansible.cfg', 'w') as ansibleconfig:
+        ansibleconfig.write(config)
 
 
 def Inventory(path):
-    with open('f{path}/inventory') as inventory:
+    with open('f{path}/inventory', 'w') as inventory:
         inventory.write('localhost ansible_python_interpreter=/usr/bin/python3')
 
-
+CheckPath(PATH)
 CleanUp(PATH)
+CreateAll(PATH)
 AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
+Inventory(PATH)
 
-#Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor.
+#Notes - In this program, things are either being created, updated or deleted. Might be worth making a Class for each case - to refactor. Also, why don't we create everything in one place
