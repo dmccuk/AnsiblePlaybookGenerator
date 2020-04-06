@@ -152,6 +152,15 @@ def PlaybookWrite(path, config, name):
         playbook.write(config)
 
 
+def TemplateFiles(path, name):
+    with open(f"{path}/templates/{name}.j2", "w+") as template:
+        template.write(
+            f"""Add stuff to me!
+Ansible_facts example:
+Servername: {{ ansible_hostname }}"""
+        )
+
+
 CleanUp(PATH)
 CheckPath(PATH)
 CreateAll(PATH)
@@ -162,6 +171,10 @@ GROUP_VARS_TEMPLATE = GroupVarsTemplate(keyVars)
 for i in range(len(keyVars)):
     PLAYBOOK_CONFIG = PlaybookNameTemplate(PATH, keyVars, i)
     PlaybookWrite(PATH, PLAYBOOK_CONFIG, keyVars[0][i])
+    try:
+        TemplateFiles(PATH, keyVars[3][i])
+    except IndexError:
+        pass
 AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
 Inventory(PATH)
 RunYml(PATH, RUN_YML_TEMPLATE)
