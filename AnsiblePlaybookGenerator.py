@@ -101,8 +101,7 @@ def GroupVars(path, config):
 
 def PlaybookNameTemplate(path, keyfile, index):
     try:
-        config = f"""
----
+        config = f"""---
 - name: install package {keyfile[1][index]}
   package:
     name: "{{{{ {keyfile[0][index]}_package }}}}"
@@ -122,7 +121,7 @@ def PlaybookNameTemplate(path, keyfile, index):
   -  restart {keyfile[1][index]}"""
     except IndexError:
         pass
-    return(config)
+    return config
 
 
 def RunYmlTemplate(controlfile, keyfile):
@@ -141,16 +140,21 @@ def RunYmlTemplate(controlfile, keyfile):
         state: restarted"""
     return config
 
+def PlaybookWrite(path, config, name):
+    with open(f'{path}/tasks/{name}.yml', 'w+') as playbook:
+        playbook.write(config)
 
+
+CleanUp(PATH)
+CheckPath(PATH)
+CreateAll(PATH)
 keyVars = ParseKeyFile()
 controlVars = ParseControlFile()
 RUN_YML_TEMPLATE = RunYmlTemplate(controlVars, keyVars)
 GROUP_VARS_TEMPLATE = GroupVarsTemplate(keyVars)
-#for i in range(len(keyVars)):
-#    PlaybookNameTemplate(PATH, keyVars, i)
-CheckPath(PATH)
-CleanUp(PATH)
-CreateAll(PATH)
+for i in range(len(keyVars)):
+    PLAYBOOK_CONFIG = PlaybookNameTemplate(PATH, keyVars, i)
+    PlaybookWrite(PATH, PLAYBOOK_CONFIG, keyVars[0][i])
 AnsibleCfg(PATH, ANSIBLE_CONFIG_TEMPLATE)
 Inventory(PATH)
 RunYml(PATH, RUN_YML_TEMPLATE)
