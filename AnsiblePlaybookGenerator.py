@@ -133,6 +133,12 @@ def RunYmlTemplate(controlfile, keyfile):
 
   tasks:
   handlers:"""
+    for i in range(len(keyfile[2])):
+        config = config + f"""
+    - name: restart {keyfile[1][i]}
+      service:
+        name: {keyfile[1][i]}
+        state: restarted"""
     return config
 
 
