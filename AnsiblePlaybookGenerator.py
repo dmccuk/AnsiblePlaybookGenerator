@@ -161,8 +161,8 @@ Servername: {{ ansible_hostname }}"""
         )
 
 
-CleanUp(PATH)
 CheckPath(PATH)
+CleanUp(PATH)
 CreateAll(PATH)
 keyVars = ParseKeyFile()
 controlVars = ParseControlFile()
