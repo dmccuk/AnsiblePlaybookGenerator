@@ -133,8 +133,14 @@ def RunYmlTemplate(controlfile, keyfile):
   connection: {controlfile['connection']}
   gather_facts: {controlfile['facts']}
 
-  tasks:
-  handlers:"""
+  tasks:"""
+    for i in range(len(keyfile[0])):
+        config = (
+            config
+            + f"""
+    - import_tasks: tasks/{keyfile[0][i]}.yml"""
+        )
+    config = config + "\n  handlers:"
     for i in range(len(keyfile[2])):
         config = (
             config
