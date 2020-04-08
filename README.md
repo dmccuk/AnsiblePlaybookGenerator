@@ -4,8 +4,10 @@ The idea is to create a base ansible playbook for your packages, services, templ
 
 ## Pre-reqs!
  * You must be using ansible 2.4 or above.
+ * Rhel7/8 & ubuntu 16/18.04
+ * python3 (or bash available)
 
-## Tested on RHEL8 Ubuntu (Xenial/Bionic) 16/18.04
+## Tested on RHEL8, RHEL7 & Ubuntu (Xenial/Bionic) 16/18.04
 NOTE: If you run this on older OS's it may get a python issue (it trys to install some python2 packages). Once I do more testing I'll be able to update the script and detect which version is running. If you're running it on earlier OS's, and you get any python issue, try removing the variable from the inventory file and re-running.
 
 ### Latest updates:
@@ -14,13 +16,21 @@ NOTE: If you run this on older OS's it may get a python issue (it trys to instal
  * Added support for packages that don't have a service. Just leave the service column blank and it won't be added.
  * Resolved an issue with more than one template in the keyFile. Multiple templates and handlers are now supported.
  * Added an ansible fact example to the templates (added gather_facts: true)
- * Added a control file to "pre-set" variables in the playbooks. Currently only limited to hosts & gather_facts. It gives you a way to set certain variables if you wish before you create the code. 
+ * Added a control file to "pre-set" variables in the playbooks. Currently only limited to hosts & gather_facts. It gives you a way to set certain variables if you wish before you create the code.
+ * Python3 script added by @HarleyB123
 
 ### Quick-Start
  * Watch the Demo on youtube: https://youtu.be/6AbGNaoFcIk
  * Clone the repo & cd AnsiblePlaybookGenerator
- * run the script: ./AnsiblePlaybookGenerator.sh
- * cd /tmp/ansible_files & run (as root): # ansible-playbook -i inventory run.yml
+ * run the script:
+ ````
+ $ ./AnsiblePlaybookGenerator.sh
+ or
+ $ python3 AnsiblePlaybookGenerator.py
+ Then:
+ $ cd /tmp/ansible_files
+ $ ansible-playbook run.yml
+ ````
  * Watch the playbook run and install nginx, curl, wget & vsftp.
  * Now have a look around at ansible playbooks, templates & group_vars - enjoy :)
  
