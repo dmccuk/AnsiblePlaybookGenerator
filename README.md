@@ -5,7 +5,7 @@ The idea is to create a base ansible playbook for your packages, services, templ
 ## Pre-reqs!
  * You must be using ansible 2.4 or above.
  * Rhel7/8 & ubuntu 16/18.04
- * python3 (or bash available)
+ * python3
 
 ## Tested on RHEL8, RHEL7 & Ubuntu (Xenial/Bionic) 16/18.04
 NOTE: If you run this on older OS's it may get a python issue (it trys to install some python2 packages). Once I do more testing I'll be able to update the script and detect which version is running. If you're running it on earlier OS's, and you get any python issue, try removing the variable from the inventory file and re-running.
